@@ -1,3 +1,5 @@
+// pages/index.js
+
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,12 +13,16 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
+import dynamic from "next/dynamic";
+
+const Sphere = dynamic(() => import("@/components/visuals/Sphere"), { ssr: false });
 
 export default function Home() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
+  const [isRegistering, setIsRegistering] = useState(false);
 
   const handleLogin = () => {
     if (username === "pctotal" && password === "power") {
@@ -55,14 +61,15 @@ export default function Home() {
   };
 
   return (
-    <div className="relative w-full min-h-screen font-sans">
+    <div className="relative w-full min-h-screen font-sans bg-gray-900 text-white">
       <Particles
         id="tsparticles"
         init={particlesInit}
         options={{
-          fullScreen: { enable: true, zIndex: -1 },
           background: {
-            color: { value: "#ffffff" },
+            color: {
+              value: "#0d0d0d",
+            },
           },
           fpsLimit: 60,
           interactivity: {
@@ -77,12 +84,12 @@ export default function Home() {
             },
           },
           particles: {
-            color: { value: "#000000" },
+            color: { value: "#ffffff" },
             links: {
-              color: "#000000",
+              color: "#ffffff",
               distance: 150,
               enable: true,
-              opacity: 0.3,
+              opacity: 0.2,
               width: 1,
             },
             collisions: { enable: true },
@@ -96,23 +103,26 @@ export default function Home() {
             },
             number: {
               density: { enable: true, area: 800 },
-              value: 60,
+              value: 50,
             },
-            opacity: { value: 0.5 },
+            opacity: { value: 0.3 },
             shape: { type: "circle" },
-            size: { value: { min: 1, max: 5 } },
+            size: { value: { min: 1, max: 4 } },
           },
           detectRetina: true,
         }}
       />
 
-      <div className="absolute inset-0 p-6 max-w-xl mx-auto z-10">
-        <h1 className="text-4xl font-bold mb-4">Integrity Guest</h1>
+      <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-6">
+        <Sphere />
+        <h1 className="text-4xl font-bold mb-4 mt-2 animate-fadeIn">Integrity Guest</h1>
 
         {!isLoggedIn ? (
-          <Card>
+          <Card className="w-full max-w-md">
             <CardContent className="space-y-4 p-4">
-              <h2 className="text-xl font-semibold">Login</h2>
+              <h2 className="text-xl font-semibold">
+                {isRegistering ? "Registrarse" : "Login"}
+              </h2>
               <Input
                 placeholder="Usuario"
                 value={username}
@@ -124,11 +134,26 @@ export default function Home() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <Button onClick={handleLogin}>Entrar</Button>
+              <Button onClick={handleLogin}>
+                {isRegistering ? "Registrarse" : "Entrar"}
+              </Button>
+              <p
+                className="text-sm text-gray-400 cursor-pointer hover:underline"
+                onClick={() => setIsRegistering(!isRegistering)}
+              >
+                {isRegistering
+                  ? "¿Ya tienes cuenta? Inicia sesión"
+                  : "¿No tienes cuenta? Regístrate aquí"}
+              </p>
+              {isRegistering && (
+                <p className="text-xs text-yellow-400">
+                  * Funcionalidad de registro en desarrollo
+                </p>
+              )}
             </CardContent>
           </Card>
         ) : (
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-4">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-4 w-full max-w-2xl">
             <TabsList>
               <TabsTrigger value="report">Reportar Cliente</TabsTrigger>
               <TabsTrigger value="search">Buscar Clientes</TabsTrigger>
