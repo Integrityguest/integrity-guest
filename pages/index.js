@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -60,10 +60,9 @@ export default function Home() {
         id="tsparticles"
         init={particlesInit}
         options={{
+          fullScreen: { enable: true, zIndex: -1 },
           background: {
-            color: {
-              value: "#ffffff",
-            },
+            color: { value: "#ffffff" },
           },
           fpsLimit: 60,
           interactivity: {
@@ -108,7 +107,7 @@ export default function Home() {
       />
 
       <div className="absolute inset-0 p-6 max-w-xl mx-auto z-10">
-        <h1 className="text-4xl font-bold mb-4 animate-fadeIn">Integrity Guest</h1>
+        <h1 className="text-4xl font-bold mb-4">Integrity Guest</h1>
 
         {!isLoggedIn ? (
           <Card>
