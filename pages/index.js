@@ -61,15 +61,13 @@ export default function Home() {
   };
 
   return (
-    <div className="relative w-full min-h-screen font-sans bg-gray-900 text-white">
+    <div className="relative w-full min-h-screen font-sans bg-gray-900 text-white overflow-hidden">
       <Particles
         id="tsparticles"
         init={particlesInit}
         options={{
           background: {
-            color: {
-              value: "#0d0d0d",
-            },
+            color: { value: "#0d0d0d" },
           },
           fpsLimit: 60,
           interactivity: {
@@ -113,8 +111,18 @@ export default function Home() {
         }}
       />
 
-      <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-6">
+      {/* Esfera animada y muñeco */}
+      <div className="absolute top-6 right-6 w-32 h-32 z-0">
         <Sphere />
+        <div className="absolute bottom-[-10px] left-1/2 -translate-x-1/2">
+          <span role="img" aria-label="persona" className="text-4xl">
+            🧑‍💼
+          </span>
+        </div>
+      </div>
+
+      {/* Zona principal de contenido */}
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6">
         <h1 className="text-4xl font-bold mb-4 mt-2 animate-fadeIn">Integrity Guest</h1>
 
         {!isLoggedIn ? (
